@@ -7,6 +7,7 @@
       'page callback' => 'drupal_get_form',
       'access callback' => TRUE,
       'page arguments' => array('state_poll_form'),
+      'menu_name' => 'main-menu',
     );
     $items['state_poll_success'] = array(
       'title' => 'You did a thing. congrats.',
@@ -23,6 +24,7 @@
 
   function state_poll_form() {
     $form = array();
+    $form['#attributes'] = array('id' => array('pollForm'));
     $form['ice_cream'] = array(
       '#title' => 'Ice Cream',
       '#type' => 'textfield',
@@ -40,6 +42,9 @@
       '#value' => 'click me',
       '#type' => 'image_button',
       '#src' => 'https://en.pimg.jp/014/506/979/1/14506979.jpg',
+    );
+    $form['#attached']['js'] = array(
+      drupal_get_path('module', 'state_poll') . '/myScripts.js',
     );
     // $form['attributes' = array(
     //   'class' => 'state-form',
