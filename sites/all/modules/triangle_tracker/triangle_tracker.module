@@ -1,0 +1,68 @@
+<?php
+function triangle_tracker_menu() {
+  $items = array();
+  $items['triangle_tracker'] = array(
+      'title' => 'Triangle Status',
+      'type' => MENU_NORMAL_ITEM,
+      'access callback' => TRUE,
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('sides_form'),
+    );
+  $items['triangle_success'] = array(
+      'title' => 'You made a triangle; it is a very advanced shape',
+      'type' => MENU_CALLBACK,
+      'access callback' => TRUE,
+      'page callback' => 'triangle_success_page',
+    );
+  return $items;
+}
+
+function triangle_success_page() {
+  $triangle_results = $_SESSION['triangle_results'];
+  return "$triangle_results";
+}
+
+function sides_form() {
+  $form = array();
+  $form['side1'] = array(
+      '#type' => 'textfield',
+      '#description' => "A side of a triangle!",
+      '#title' => 'Side 1',
+      '#element_validate' => array('validate_positive'),
+      '#required' => TRUE,
+    );
+  $form['side2'] = array(
+      '#type' => 'textfield',
+      '#description' => 'Another side.',
+      '#title' => 'Side 2',
+      '#element_validate' => array('validate_positive'),
+      '#required' => TRUE,
+    );
+  $form['side3'] = array(
+      '#type' => 'textfield',
+      '#description' => 'A third side...',
+      '#title' => 'Side 3',
+      '#element_validate' => array('validate_positive', 'element_validate_number'),
+      '#required' => TRUE,
+    );
+  $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => 'Track Triangle',
+    );
+  return $form;
+}
+
+function validate_positive($element) {
+  $name = array('@name' => $element['#title']);
+  if ($element['#value'] < 1) {
+    form_error($element, t('@name needs to be a positive integer. Read the directions.', $name));
+  }
+}
+
+function sides_form_submit($form, &$form_state) {
+  $side1 = $form_state['values']['side1'];
+  $side2 = $form_state['values']['side2'];
+  $side3 = $form_state['values']['side3'];
+  $_SESSION['triangle_results'] = $side1 + $side2 + $side3;
+  $form_state['redirect'] = 'triangle_success';
+}

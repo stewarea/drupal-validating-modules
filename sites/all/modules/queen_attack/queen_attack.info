@@ -1,0 +1,5 @@
+name = Queen Attack
+description = Determine if you're within reach of the Queen.
+package = Epicodus Examples
+core = 7.x
+files[] = queen_attack.module

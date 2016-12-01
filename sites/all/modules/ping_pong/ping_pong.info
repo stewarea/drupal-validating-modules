@@ -1,0 +1,5 @@
+name = Ping Pong
+description = Enter a number to play Ping Pong
+package = Epicodus Examples
+core = 7.x
+files[] = ping_pong.module

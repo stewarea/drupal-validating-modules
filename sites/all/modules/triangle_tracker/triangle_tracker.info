@@ -1,0 +1,5 @@
+name = Triangle Tracker
+description = Tells you if a triangle is equilateral for some reason.
+package = Epicodus Examples
+core = 7.x
+files[] = triangle_tracker.module

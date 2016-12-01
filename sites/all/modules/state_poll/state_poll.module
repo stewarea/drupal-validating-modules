@@ -1,0 +1,70 @@
+<?php
+  function state_poll_menu() {
+    $items = array();
+    $items['poll'] = array(
+      'title' => 'State Poll',
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'drupal_get_form',
+      'access callback' => TRUE,
+      'page arguments' => array('state_poll_form'),
+    );
+    $items['state_poll_success'] = array(
+      'title' => 'You did a thing. congrats.',
+      'type' => MENU_CALLBACK,
+      'page callback' => 'state_poll_success_page',
+      'access callback' => TRUE,
+    );
+    return $items;
+  }
+  function state_poll_success() {
+
+
+  }
+
+  function state_poll_form() {
+    $form = array();
+    $form['ice_cream'] = array(
+      '#title' => 'Ice Cream',
+      '#type' => 'textfield',
+      '#description' => 'fill me with stuff',
+    );
+    $form['state'] = array(
+      '#title' => 'State',
+      '#type' => 'select',
+      '#options' => drupal_map_assoc(array(t('Or'), t('Mn'), t('In'), t('Wa'), t('Ha'))),
+      '#description' => 'pick a state',
+      // '#element_validate' => array('validate_state'),
+      );
+    $form['submit'] = array(
+      '#attributes' => array('class' => array('bigButton')),
+      '#value' => 'click me',
+      '#type' => 'image_button',
+      '#src' => 'https://en.pimg.jp/014/506/979/1/14506979.jpg',
+    );
+    // $form['attributes' = array(
+    //   'class' => 'state-form',
+    // );
+
+    return $form;
+
+  }
+
+  // function validate_state($element) {
+  //   $state = $element['#value'];
+  //   // $valid_states = array('Or', 'Oregon', 'or',' oregon');
+  //   if(!in_array($state, $valid_states)) {
+  //     form_error($element, t('Try a better state.'));
+  //   }
+  // }
+
+  function state_poll_form_submit($form, &$form_state) {
+    $ice_cream = $form_state['values']['ice_cream'];
+    $state = $form_state['values']['state'];
+
+    $_SESSION['stupid_poll'] = array('ice_cream' => $ice_cream, 'state' => $state);
+    $form_state['redirect'] = 'state_poll_success';
+  }
+
+  function state_poll_success_page() {
+    return "Way to go, you filled out a form...<br>We have you as liking " . $_SESSION['stupid_poll']['ice_cream'] . " and living in " . $_SESSION['stupid_poll']['state'] . ".";
+  }

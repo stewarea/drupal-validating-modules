@@ -1,0 +1,6 @@
+name = State Poll
+description = intruding on your rights, man
+package = Epicodus Examples
+core = 7.x
+files[] = state_poll.module
+stylesheets[all][] = styles.css

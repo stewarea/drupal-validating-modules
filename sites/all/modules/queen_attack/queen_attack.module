@@ -1,0 +1,69 @@
+<?php
+
+function queen_attack_menu() {
+    $items['queen_attack'] = array(
+        'title' => 'Queen Attack',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queen_attack_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queen_attack_success_page'] = array(
+        '#title' => 'Success',
+        'page callback' => 'queen_attack_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queen_attack_form() {
+    $form['queen_x'] = array(
+        '#title' => 'Queen X',
+        '#type' => 'textfield',
+        '#description' => 'Enter Queen X Coordinate',
+    );
+    $form['queen_y'] = array(
+        '#title' => 'Queen Y',
+        '#type' => 'textfield',
+        '#description' => 'Enter Queen Y Coordinate',
+    );
+    $form['user_x'] = array(
+        '#title' => 'User X',
+        '#type' => 'textfield',
+        '#description' => 'Enter User X Coordinate',
+    );
+    $form['user_y'] = array(
+        '#title' => 'User Y',
+        '#type' => 'textfield',
+        '#description' => 'Enter User Y Coordinate',
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Submit',
+    );
+    return $form;
+}
+
+function queen_attack_form_submit($form, &$form_state) {
+    $queen_x = $form_state['values']['queen_x'];
+    $queen_y = $form_state['values']['queen_y'];
+    $user_x = $form_state['values']['user_x'];
+    $user_y = $form_state['values']['user_y'];
+
+    if ($queen_x == $user_x || $queen_y == $user_y || (abs($queen_x-$user_x)  == abs($queen_y-$user_y))) {
+        $_SESSION['results'] = TRUE;
+    } else {
+        $_SESSION['results'] = FALSE;
+    }
+
+    $form_state['redirect'] = 'queen_attack_success_page';
+}
+
+function queen_attack_success() {
+    if ($_SESSION['results']) {
+        return "Hit";
+    } else {
+        return "Miss";
+    }
+}
